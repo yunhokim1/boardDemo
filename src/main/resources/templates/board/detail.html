@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>게시글 상세보기</title>
+</head>
+<body>
+<h1>게시글 상세보기</h1>
+<p>ID: <span th:text="${board.id}"></span></p>
+<p>제목: <span th:text="${board.title}"></span></p>
+<p>내용: <span th:text="${board.content}"></span></p>
+<p>작성자: <span th:text="${board.writer}"></span></p>
+<a href="/boards">목록</a>
+<a th:href="@{/boards/update/{id}(id=${board.id})}">수정</a>
+<a href="#" th:onclick="'deleteBoard(' + ${board.id} + ')'">삭제</a>
+
+<script>
+    function deleteBoard(id) {
+        if (confirm("정말 삭제 하시겠습니까?")) {
+            fetch("/boards/" + id, {
+                method: "DELETE",
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("삭제 되었습니다.");
+                    window.location.href = "/boards";
+                } else {
+                    alert("삭제 실패했습니다.");
+                }
+            })
+        }
+
+    }
+</script>
+</body>
+</html>
