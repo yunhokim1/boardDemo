@@ -5,7 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @AllArgsConstructor
@@ -36,5 +37,14 @@ public class Board {
     private int comment;
 
     @Column
-    private Date regDate;
+    private String regDate;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.regDate == null) {
+            // 현재 날짜와 시간을 "yyyy-MM-dd HH:mm:ss" 형식으로 변환
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            this.regDate = LocalDateTime.now().format(formatter);
+        }
+    }
 }
