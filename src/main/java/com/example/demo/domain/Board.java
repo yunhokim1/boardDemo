@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,4 +25,16 @@ public class Board {
 
     @Column(nullable = false, length = 10)
     private String writer;
+
+    @Column(columnDefinition = "integer default 0")
+    private int view;
+
+    @Column(columnDefinition = "integer default 0")
+    private int boardLike;
+
+    @Column(columnDefinition = "integer default 0")
+    private int comment;
+
+    @Column
+    private Date regDate;
 }

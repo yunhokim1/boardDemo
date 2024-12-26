@@ -1,0 +1,25 @@
+.custom-link {
+    color: black;
+    text-decoration: none;
+}
+
+.custom-link:hover {
+    text-decoration: underline;
+}
+
+/* button */
+.custom-btn {
+    background-color: midnightblue !important;
+    color: aliceblue !important;
+    font-weight: bold !important;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none; /* 링크 스타일 제거 */
+}
+
+.custom-btn:hover {
+    background-color: darkblue !important;
+    color: white !important;
+}
+
