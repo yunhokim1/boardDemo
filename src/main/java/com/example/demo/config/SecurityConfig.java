@@ -19,12 +19,12 @@ public class SecurityConfig{
         http
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화 (Spring Security 6.x 방식)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/register", "/css/**", "/js/**", "/boards/**").permitAll() // 공용 리소스 허용
+                        .requestMatchers("/login", "/users/**", "/css/**", "/js/**", "/boards/**").permitAll() // 공용 리소스 허용
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .formLogin(formLogin -> formLogin
                         .loginPage("/login") // 사용자 정의 로그인 페이지
-                        .defaultSuccessUrl("/") // 로그인 성공 후 이동할 페이지
+                        .defaultSuccessUrl("/boards", true) // 로그인 성공 후 이동할 페이지
                         .permitAll()
                 )
                 .logout(logout -> logout

@@ -28,7 +28,7 @@ public class BoardControllerWithThymeleaf {
     @GetMapping("/regist")
     public String createForm(Model model) {
         model.addAttribute("board", new Board());
-        return "board/regist";
+        return "board/write";
     }
 
     //게시글 저장
