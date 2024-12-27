@@ -28,7 +28,7 @@ public class Board {
     private String writer;
 
     @Column(columnDefinition = "integer default 0")
-    private int view;
+    private int viewCount;
 
     @Column(columnDefinition = "integer default 0")
     private int boardLike;

@@ -13,6 +13,8 @@ public interface BoardService {
 
     public Board findBoardById(int id);
 
+    public Board findBoardByIdWithViewCountUpdate(int id, HttpServletRequest request);
+
     public Board saveBoard(Board board);
 
     public void deleteBoard(int id);

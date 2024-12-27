@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.domain.Board;
 import com.example.demo.service.BoardService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,8 +40,8 @@ public class BoardControllerWithThymeleaf {
 
     //게시글 상세보기
     @GetMapping("/{id}")
-    public String detail(@PathVariable int id, Model model) {
-        Board board = boardService.findBoardById(id);
+    public String detail(@PathVariable int id, Model model, HttpServletRequest request) {
+        Board board = boardService.findBoardByIdWithViewCountUpdate(id, request);
 
         model.addAttribute("board", board);
         return "board/detail";

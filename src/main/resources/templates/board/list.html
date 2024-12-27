@@ -56,9 +56,10 @@
         <thead class="table-light">
         <tr>
             <th scope="col" style="width: 5%; text-align: center;">#</th>
-            <th scope="col" style="width: 70%; text-align: center;">제목</th>
+            <th scope="col" style="width: 65%; text-align: center;">제목</th>
             <th scope="col" style="width: 10%; text-align: center;">글쓴이</th>
             <th scope="col" style="width: 15%; text-align: center;">등록일</th>
+            <th scope="col" style="width: 5%; text-align: center;">조회수</th>
 <!--            <th>상세보기</th>-->
         </tr>
         </thead>
@@ -70,6 +71,7 @@
             </td>
             <td th:text="${board.writer}" style="text-align: center;"></td>
             <td th:text="${board.regDate}" style="text-align: center;"></td>
+            <td th:text="${board.viewCount}" style="text-align: center;"></td>
             <!--<td>
                 <a th:href="@{/boards/{id}(id=${board.id})}" class="btn btn-info btn-sm text-white">상세보기</a>
             </td>-->
