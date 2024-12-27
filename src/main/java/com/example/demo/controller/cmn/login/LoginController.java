@@ -2,6 +2,7 @@ package com.example.demo.controller.cmn.login;
 
 import com.example.demo.service.user.CustomUserDetailsService;
 import com.example.demo.util.JwtUtil;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,17 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
+@RequiredArgsConstructor
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService customUserDetailsService;
-
-    public LoginController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, CustomUserDetailsService customUserDetailsService) {
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
-        this.customUserDetailsService = customUserDetailsService;
-    }
 
     // 로그인 페이지 (GET 요청)
     @GetMapping("/login")

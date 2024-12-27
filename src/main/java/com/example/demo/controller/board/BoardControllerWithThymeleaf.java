@@ -3,19 +3,17 @@ package com.example.demo.controller.board;
 import com.example.demo.domain.board.Board;
 import com.example.demo.service.board.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/boards")
 public class BoardControllerWithThymeleaf {
     private final BoardService boardService;
-
-    public BoardControllerWithThymeleaf(BoardService boardService) {
-        this.boardService = boardService;
-    }
 
     //게시판 목록 보기
     @GetMapping

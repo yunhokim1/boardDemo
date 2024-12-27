@@ -4,6 +4,7 @@ import com.example.demo.dao.board.BoardRepository;
 import com.example.demo.domain.board.Board;
 import com.example.demo.service.board.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -12,17 +13,12 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
-
     private final RedisTemplate<String, String> redisTemplate;
-
-    public BoardServiceImpl(BoardRepository boardRepository, RedisTemplate<String, String> redisTemplate) {
-        this.boardRepository = boardRepository;
-        this.redisTemplate = redisTemplate;
-    }
 
     public List<Board> findAllBoards() {
         return boardRepository.findAll();
