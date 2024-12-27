@@ -1,8 +1,8 @@
-package com.example.demo.service.impl;
+package com.example.demo.service.board.impl;
 
-import com.example.demo.dao.BoardRepository;
-import com.example.demo.domain.Board;
-import com.example.demo.service.BoardService;
+import com.example.demo.dao.board.BoardRepository;
+import com.example.demo.domain.board.Board;
+import com.example.demo.service.board.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;

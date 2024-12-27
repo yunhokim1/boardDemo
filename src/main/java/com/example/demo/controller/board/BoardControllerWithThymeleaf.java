@@ -1,7 +1,7 @@
-package com.example.demo.controller;
+package com.example.demo.controller.board;
 
-import com.example.demo.domain.Board;
-import com.example.demo.service.BoardService;
+import com.example.demo.domain.board.Board;
+import com.example.demo.service.board.BoardService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;

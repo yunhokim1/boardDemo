@@ -1,9 +1,7 @@
-package com.example.demo.service;
+package com.example.demo.service.board;
 
-import com.example.demo.dao.BoardRepository;
-import com.example.demo.domain.Board;
+import com.example.demo.domain.board.Board;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 

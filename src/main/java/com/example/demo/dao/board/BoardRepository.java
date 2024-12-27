@@ -1,6 +1,6 @@
-package com.example.demo.dao;
+package com.example.demo.dao.board;
 
-import com.example.demo.domain.Board;
+import com.example.demo.domain.board.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
