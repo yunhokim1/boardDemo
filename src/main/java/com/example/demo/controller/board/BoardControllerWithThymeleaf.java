@@ -1,10 +1,14 @@
 package com.example.demo.controller.board;
 
 import com.example.demo.domain.board.Board;
+import com.example.demo.domain.user.User;
 import com.example.demo.service.board.BoardService;
+import com.example.demo.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +18,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/boards")
 public class BoardControllerWithThymeleaf {
     private final BoardService boardService;
+    private final UserService userService;
 
     //게시판 목록 보기
     @GetMapping
     public String list(Model model) {
+        // 현재 로그인된 사용자 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        User loggedInUser = userService.findByUserId(userId);
+
+        // 로그인된 사용자가 있으면 그 정보를 model에 추가
+        if (loggedInUser != null) {
+            model.addAttribute("loggedInUser", loggedInUser);
+        }
+
         model.addAttribute("boards", boardService.findAllBoards());
         return "board/list";
     }
