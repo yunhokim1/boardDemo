@@ -48,7 +48,7 @@
             <div class="d-flex ms-auto">
                 <div th:if="${loggedInUser == null}">
                     <!-- 로그인되지 않은 경우 로그인, 회원가입 버튼 -->
-                    <a href="/login" class="btn btn-light btn-sm custom-btn me-2">로그인</a>
+                    <a href="/login" class="btn btn-light btn-sm custom-btn me-1">로그인</a>
                     <a href="/users/register" class="btn btn-light btn-sm custom-btn">회원가입</a>
                 </div>
 
@@ -56,7 +56,7 @@
                     <!-- 로그인된 경우 사용자 아이콘과 마이페이지, 로그아웃 버튼 -->
                     <a>
                         <i class="bi bi-person-circle"></i> <!-- 사용자 아이콘 -->
-                        <span th:text="${loggedInUser.nickname}"></span> <!-- 사용자 닉네임 -->
+                        <strong th:text="${loggedInUser.nickname}" class="me-2"></strong> <!-- 사용자 닉네임 -->
                     </a>
                     <a href="/user/my-page" class="btn btn-light btn-sm custom-btn">마이페이지</a>
                     <a href="/logout" class="btn btn-light btn-sm custom-btn">로그아웃</a>
