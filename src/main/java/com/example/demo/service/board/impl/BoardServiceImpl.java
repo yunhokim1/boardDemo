@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -75,6 +77,13 @@ public class BoardServiceImpl implements BoardService {
     }
 
     private String getClientIdentifier(HttpServletRequest request) {
+        // SecurityContextHolder에서 로그인 사용자 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated() && !(authentication.getPrincipal() instanceof String && authentication.getPrincipal().equals("anonymousUser"))) {
+            return authentication.getName();
+        }
+
+        // 로그인 정보가 없을 경우 IP + User-Agent 사용 (Fallback)
         String ip = request.getRemoteAddr();
         String userAgent = request.getHeader("User-Agent");
         return ip + ":" + userAgent;
