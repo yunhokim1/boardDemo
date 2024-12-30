@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>회원가입</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<h1>회원가입</h1>
+<form id="registerForm" th:action="@{/users/register}" th:object="${user}" method="post">
+    <div>
+        <label for="userId">아이디</label>
+        <input type="text" id="userId" th:field="*{userId}" required autocomplete="new-password">
+        <button type="button" id="checkDuplicateBtn">중복확인</button>
+        <p id="duplicateCheckResult" style="color: red;"></p>
+    </div>
+    <div>
+        <label for="password">비밀번호</label>
+        <input type="password" id="password" th:field="*{password}" required autocomplete="new-password">
+    </div>
+    <div>
+        <label for="nickname">닉네임</label>
+        <input type="text" id="nickname" th:field="*{nickname}" required>
+    </div>
+    <div>
+        <label for="name">이름</label>
+        <input type="text" id="name" th:field="*{name}" required>
+    </div>
+    <div>
+        <label for="email">이메일</label>
+        <input type="email" id="email" th:field="*{email}" required>
+    </div>
+    <div>
+        <label for="phoneNum">전화번호</label>
+        <input type="text" id="phoneNum" th:field="*{phoneNum}" required>
+    </div>
+    <div>
+        <button type="submit" id="registerBtn">회원가입</button>
+    </div>
+</form>
+
+<script>
+    window.onload = function() {
+        document.getElementById("registerForm").reset();
+    };
+
+    let isDuplicate = true;
+
+    document.getElementById("checkDuplicateBtn").addEventListener("click", function (){
+        const userId = document.getElementById("userId").value;
+        const resultElement = document.getElementById("duplicateCheckResult");
+
+        if (!userId) {
+            resultElement.textContent = "아이디를 입력하세요.";
+            resultElement.style.color = "red";
+            isDuplicate = true;
+            return;
+        }
+
+        fetch(`/users/check-duplicate?userId=${encodeURIComponent(userId)}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.exists) {
+                    resultElement.textContent = "이미 사용중인 아이디입니다.";
+                    resultElement.style.color = "red";
+                    isDuplicate = true;
+                } else {
+                    resultElement.textContent = "사용 가능한 아이디입니다.";
+                    resultElement.style.color = "green";
+                    isDuplicate = false;
+                }
+            })
+            .catch(error => {
+                resultElement.textContent = "중복 확인 중 오류가 발생했습니다.";
+                isDuplicate = true;
+                console.error(error);
+            });
+
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", function (event) {
+        if (isDuplicate) {
+            event.preventDefault(); // 폼 제출 막기
+            alert("아이디 중복 확인을 완료하세요.");
+        }
+    });
+</script>
+</body>
+</html>
