@@ -19,8 +19,8 @@
             <h4 class="card-title mb-2" th:text="${board.title}">게시글 제목</h4>
             <p class="card-text">
                 <i class="bi bi-person-circle" style="margin-right: 1px;"></i>
-                <span th:text="${board.writer}">작성자</span>
-                <span th:text="'2024-12-26 16:35'"></span>
+                <strong th:text="${board.writer}">작성자</strong>
+                <span th:text="${board.regDate}"></span>
             </p>
         </div>
         <div class="text-end">
