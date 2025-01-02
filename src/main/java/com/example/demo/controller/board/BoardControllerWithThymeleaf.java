@@ -29,18 +29,6 @@ public class BoardControllerWithThymeleaf {
         return "board/list";
     }
 
-    private void LoggedInUserInfo(Model model) {
-        // 현재 로그인된 사용자 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userId = authentication.getName();
-        User loggedInUser = userService.findByUserId(userId);
-
-        // 로그인된 사용자가 있으면 그 정보를 model에 추가
-        if (loggedInUser != null) {
-            model.addAttribute("loggedInUser", loggedInUser);
-        }
-    }
-
     //게시글 작성 페이지 이동
     @GetMapping("/regist")
     public String createForm(Model model) {
@@ -52,6 +40,14 @@ public class BoardControllerWithThymeleaf {
     //게시글 저장
     @PostMapping
     public String save(@ModelAttribute Board board) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        User loggedInUser = userService.findByUserId(userId);
+
+        if (loggedInUser != null) {
+            board.setWriter(loggedInUser.getNickname());
+        }
+
         boardService.saveBoard(board);
         return "redirect:/boards";
     }
@@ -97,5 +93,17 @@ public class BoardControllerWithThymeleaf {
 
         boardService.deleteBoard(id);
         return ResponseEntity.noContent().build();
+    }
+
+    private void LoggedInUserInfo(Model model) {
+        // 현재 로그인된 사용자 정보 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        User loggedInUser = userService.findByUserId(userId);
+
+        // 로그인된 사용자가 있으면 그 정보를 model에 추가
+        if (loggedInUser != null) {
+            model.addAttribute("loggedInUser", loggedInUser);
+        }
     }
 }

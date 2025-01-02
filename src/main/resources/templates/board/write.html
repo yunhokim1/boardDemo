@@ -24,10 +24,10 @@
             <label for="content" class="form-label">내용</label>
             <textarea id="content" th:field="*{content}" class="form-control" rows="10" required></textarea>
         </div>
-        <div class="col-md-12">
+        <!--<div class="col-md-12">
             <label for="writer" class="form-label">작성자</label>
-            <input type="text" id="writer" th:field="*{writer}" class="form-control" required />
-        </div>
+            <input type="text" id="writer" th:value="${loggedInUser.nickname}" class="form-control" readonly />
+        </div>-->
         <div class="col-12 text-end">
             <button type="submit" class="btn btn-light btn-sm custom-btn"><i class="bi bi-pencil"></i> 저장</button>
             <a href="/boards" class="btn btn-light btn-sm custom-btn"><i class="bi bi-x"></i> 취소</a>

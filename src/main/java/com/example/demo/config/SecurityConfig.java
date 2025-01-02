@@ -19,7 +19,9 @@ public class SecurityConfig{
         http
                 .csrf(csrf -> csrf.disable())  // CSRF 비활성화 (Spring Security 6.x 방식)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/login", "/users/register", "/users/check-duplicate", "/css/**", "/js/**", "/boards/**").permitAll() // 공용 리소스 허용
+                        .requestMatchers("/login", "/users/register", "/users/check-duplicate", "/css/**", "/js/**").permitAll() // 공용 리소스 허용
+                        .requestMatchers("/boards/regist").authenticated()
+                        .requestMatchers("/boards/**").permitAll()
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 .formLogin(formLogin -> formLogin
