@@ -23,6 +23,13 @@ public class BoardControllerWithThymeleaf {
     //게시판 목록 보기
     @GetMapping
     public String list(Model model) {
+        LoggedInUserInfo(model);
+
+        model.addAttribute("boards", boardService.findAllBoards());
+        return "board/list";
+    }
+
+    private void LoggedInUserInfo(Model model) {
         // 현재 로그인된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
@@ -32,14 +39,12 @@ public class BoardControllerWithThymeleaf {
         if (loggedInUser != null) {
             model.addAttribute("loggedInUser", loggedInUser);
         }
-
-        model.addAttribute("boards", boardService.findAllBoards());
-        return "board/list";
     }
 
     //게시글 작성 페이지 이동
     @GetMapping("/regist")
     public String createForm(Model model) {
+        LoggedInUserInfo(model);
         model.addAttribute("board", new Board());
         return "board/write";
     }
@@ -54,6 +59,7 @@ public class BoardControllerWithThymeleaf {
     //게시글 상세보기
     @GetMapping("/{id}")
     public String detail(@PathVariable int id, Model model, HttpServletRequest request) {
+        LoggedInUserInfo(model);
         Board board = boardService.findBoardByIdWithViewCountUpdate(id, request);
 
         model.addAttribute("board", board);
@@ -63,6 +69,7 @@ public class BoardControllerWithThymeleaf {
     //게시글 수정 화면
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable int id, Model model) {
+        LoggedInUserInfo(model);
         Board board = boardService.findBoardById(id);
 
         model.addAttribute("board", board);
