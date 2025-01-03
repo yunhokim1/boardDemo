@@ -18,10 +18,10 @@ public class BoardController {
     }
 
     //모든 게시글 조회
-    @GetMapping
+    /*@GetMapping
     public List<Board> getAllBoards() {
         return boardService.findAllBoards();
-    }
+    }*/
 
     //게시글 ID로 조회
     @GetMapping("/{id}")

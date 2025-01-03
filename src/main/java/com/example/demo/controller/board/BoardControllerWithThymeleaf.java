@@ -6,6 +6,10 @@ import com.example.demo.service.board.BoardService;
 import com.example.demo.service.user.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,10 +26,18 @@ public class BoardControllerWithThymeleaf {
 
     //게시판 목록 보기
     @GetMapping
-    public String list(Model model) {
+    public String list(@RequestParam(defaultValue = "0") int page,
+                       @RequestParam(defaultValue = "10") int size,
+                       Model model) {
         LoggedInUserInfo(model);
 
-        model.addAttribute("boards", boardService.findAllBoards());
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "regDate"));
+        Page<Board> boardsPage = boardService.findAllBoards(pageable);
+
+        model.addAttribute("boards", boardsPage.getContent());
+        model.addAttribute("currentPage", boardsPage.getNumber());
+        model.addAttribute("totalPages", boardsPage.getTotalPages());
+        model.addAttribute("totalItems", boardsPage.getTotalElements());
         return "board/list";
     }
 
