@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -101,44 +102,64 @@ public class BoardControllerWithThymeleaf {
     //게시글 수정 화면
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable int id, Model model) {
-
-        // 현재 로그인된 사용자 정보 가져오기
+        Board board = boardService.findBoardById(id);
         User loggedInUser = userService.loggedInUserInfo();
 
         // 로그인된 사용자가 있으면 그 정보를 model에 추가
         if (loggedInUser != null) {
+
             model.addAttribute("loggedInUser", loggedInUser);
+
+
+            // 로그인된 사용자와 게시글 작성자 검증
+            if (!(loggedInUser.getRole().equals("ADMIN") || loggedInUser.getUserId().equals(board.getRegId()))) {
+                return "error/authorization"; // 권한 없음 페이지로 리다이렉트
+            }
+
+            model.addAttribute("board", board);
+            return "board/update";
+
+        } else {
+            return "login";
         }
 
-        Board board = boardService.findBoardById(id);
-
-        model.addAttribute("board", board);
-        return "board/update";
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Board> update(@PathVariable int id, @RequestBody Board board) {
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody Board board) {
         Board findBoard = boardService.findBoardById(id);
+        User loggedInUser = userService.loggedInUserInfo();
+
+        if (loggedInUser == null || !(loggedInUser.getRole().equals("ADMIN") || loggedInUser.getUserId().equals(findBoard.getRegId()))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("수정 권한이 없습니다.");
+        }
 
         findBoard.setTitle(board.getTitle());
         findBoard.setContent(board.getContent());
-
-        User loggedInUser = userService.loggedInUserInfo();
-
-        if (loggedInUser != null) {
+        if(loggedInUser.getRole().equals("ADMIN")){
+            findBoard.setRegId(findBoard.getRegId());
+            findBoard.setNickname(findBoard.getNickname());
+        } else {
             findBoard.setRegId(loggedInUser.getUserId());
             findBoard.setNickname(loggedInUser.getNickname());
         }
+
         boardService.saveBoard(findBoard);
 
         return ResponseEntity.ok(findBoard);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<?> delete(@PathVariable int id) {
         Board board = boardService.findBoardById(id);
+        User loggedInUser = userService.loggedInUserInfo();
+
         if (board == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        if (loggedInUser == null || !(loggedInUser.getRole().equals("ADMIN") || loggedInUser.getUserId().equals(board.getRegId()))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("삭제 권한이 없습니다.");
         }
 
         boardService.deleteBoard(id);

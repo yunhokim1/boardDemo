@@ -38,7 +38,7 @@
             <td th:text="${board.regDate}" style="text-align: center;"></td>
             <td th:text="${board.viewCount}" style="text-align: center;"></td>
         </tr>
-        <tr th:if="${#lists.size(boards) == 0}">
+        <tr th:if="${boards != null and #lists.size(boards) == 0}">
             <td colspan="5" class="text-center">게시글이 없습니다.</td>
         </tr>
         </tbody>
