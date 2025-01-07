@@ -31,7 +31,7 @@ public class BoardControllerWithThymeleaf {
                        Model model) {
         LoggedInUserInfo(model);
 
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "regDate"));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Board> boardsPage = boardService.findAllBoards(pageable);
 
         model.addAttribute("boards", boardsPage.getContent());
