@@ -29,7 +29,14 @@ public class BoardControllerWithThymeleaf {
     public String list(@RequestParam(defaultValue = "0") int page,
                        @RequestParam(defaultValue = "10") int size,
                        Model model) {
-        LoggedInUserInfo(model);
+
+        // 현재 로그인된 사용자 정보 가져오기
+        User loggedInUser = LoggedInUserInfo();
+
+        // 로그인된 사용자가 있으면 그 정보를 model에 추가
+        if (loggedInUser != null) {
+            model.addAttribute("loggedInUser", loggedInUser);
+        }
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Board> boardsPage = boardService.findAllBoards(pageable);
@@ -44,7 +51,15 @@ public class BoardControllerWithThymeleaf {
     //게시글 작성 페이지 이동
     @GetMapping("/regist")
     public String createForm(Model model) {
-        LoggedInUserInfo(model);
+
+        // 현재 로그인된 사용자 정보 가져오기
+        User loggedInUser = LoggedInUserInfo();
+
+        // 로그인된 사용자가 있으면 그 정보를 model에 추가
+        if (loggedInUser != null) {
+            model.addAttribute("loggedInUser", loggedInUser);
+        }
+
         model.addAttribute("board", new Board());
         return "board/write";
     }
@@ -52,12 +67,12 @@ public class BoardControllerWithThymeleaf {
     //게시글 저장
     @PostMapping
     public String save(@ModelAttribute Board board) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userId = authentication.getName();
-        User loggedInUser = userService.findByUserId(userId);
+
+        // 현재 로그인된 사용자 정보 가져오기
+        User loggedInUser = LoggedInUserInfo();
 
         if (loggedInUser != null) {
-            board.setRegId(userId);
+            board.setRegId(loggedInUser.getUserId());
             board.setNickname(loggedInUser.getNickname());
         }
 
@@ -68,7 +83,15 @@ public class BoardControllerWithThymeleaf {
     //게시글 상세보기
     @GetMapping("/{id}")
     public String detail(@PathVariable int id, Model model, HttpServletRequest request) {
-        LoggedInUserInfo(model);
+
+        // 현재 로그인된 사용자 정보 가져오기
+        User loggedInUser = LoggedInUserInfo();
+
+        // 로그인된 사용자가 있으면 그 정보를 model에 추가
+        if (loggedInUser != null) {
+            model.addAttribute("loggedInUser", loggedInUser);
+        }
+
         Board board = boardService.findBoardByIdWithViewCountUpdate(id, request);
 
         model.addAttribute("board", board);
@@ -78,7 +101,15 @@ public class BoardControllerWithThymeleaf {
     //게시글 수정 화면
     @GetMapping("/update/{id}")
     public String updateForm(@PathVariable int id, Model model) {
-        LoggedInUserInfo(model);
+
+        // 현재 로그인된 사용자 정보 가져오기
+        User loggedInUser = LoggedInUserInfo();
+
+        // 로그인된 사용자가 있으면 그 정보를 model에 추가
+        if (loggedInUser != null) {
+            model.addAttribute("loggedInUser", loggedInUser);
+        }
+
         Board board = boardService.findBoardById(id);
 
         model.addAttribute("board", board);
@@ -92,12 +123,10 @@ public class BoardControllerWithThymeleaf {
         findBoard.setTitle(board.getTitle());
         findBoard.setContent(board.getContent());
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userId = authentication.getName();
-        User loggedInUser = userService.findByUserId(userId);
+        User loggedInUser = LoggedInUserInfo();
 
         if (loggedInUser != null) {
-            findBoard.setRegId(userId);
+            findBoard.setRegId(loggedInUser.getUserId());
             findBoard.setNickname(loggedInUser.getNickname());
         }
         boardService.saveBoard(findBoard);
@@ -116,15 +145,10 @@ public class BoardControllerWithThymeleaf {
         return ResponseEntity.noContent().build();
     }
 
-    private void LoggedInUserInfo(Model model) {
+    private User LoggedInUserInfo() {
         // 현재 로그인된 사용자 정보 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userId = authentication.getName();
-        User loggedInUser = userService.findByUserId(userId);
-
-        // 로그인된 사용자가 있으면 그 정보를 model에 추가
-        if (loggedInUser != null) {
-            model.addAttribute("loggedInUser", loggedInUser);
-        }
+        return userService.findByUserId(userId);
     }
 }
