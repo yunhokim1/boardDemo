@@ -12,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -83,7 +81,9 @@ public class BoardControllerWithThymeleaf {
 
     //게시글 상세보기
     @GetMapping("/{id}")
-    public String detail(@PathVariable int id, Model model, HttpServletRequest request) {
+    public String detail(@PathVariable int id,
+                         @RequestParam(defaultValue = "0") int page,
+                         Model model, HttpServletRequest request) {
 
         // 현재 로그인된 사용자 정보 가져오기
         User loggedInUser = userService.loggedInUserInfo();
@@ -96,12 +96,15 @@ public class BoardControllerWithThymeleaf {
         Board board = boardService.findBoardByIdWithViewCountUpdate(id, request);
 
         model.addAttribute("board", board);
+        model.addAttribute("currentPage", page);
         return "board/detail";
     }
 
     //게시글 수정 화면
     @GetMapping("/update/{id}")
-    public String updateForm(@PathVariable int id, Model model) {
+    public String updateForm(@PathVariable int id,
+                             @RequestParam(defaultValue = "0") int page,
+                             Model model) {
         Board board = boardService.findBoardById(id);
         User loggedInUser = userService.loggedInUserInfo();
 
@@ -117,6 +120,7 @@ public class BoardControllerWithThymeleaf {
             }
 
             model.addAttribute("board", board);
+            model.addAttribute("currentPage", page);
             return "board/update";
 
         } else {

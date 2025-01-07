@@ -32,7 +32,7 @@
         <tr th:each="board : ${boards}" th:if="${#lists.size(boards) > 0}">
             <td th:text="${board.id}" style="text-align: center;"></td>
             <td>
-                <a th:href="@{/boards/{id}(id=${board.id})}" class="fw-bold custom-link" th:text="${board.title}"></a>
+                <a th:href="@{/boards/{id}(id=${board.id}, page=${currentPage})}" class="fw-bold custom-link" th:text="${board.title}"></a>
             </td>
             <td th:text="${board.nickname}" style="text-align: center;"></td>
             <td th:text="${board.regDate}" style="text-align: center;"></td>
