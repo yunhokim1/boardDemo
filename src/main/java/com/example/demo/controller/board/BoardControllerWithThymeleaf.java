@@ -31,7 +31,7 @@ public class BoardControllerWithThymeleaf {
                        Model model) {
 
         // 현재 로그인된 사용자 정보 가져오기
-        User loggedInUser = LoggedInUserInfo();
+        User loggedInUser = userService.loggedInUserInfo();
 
         // 로그인된 사용자가 있으면 그 정보를 model에 추가
         if (loggedInUser != null) {
@@ -53,7 +53,7 @@ public class BoardControllerWithThymeleaf {
     public String createForm(Model model) {
 
         // 현재 로그인된 사용자 정보 가져오기
-        User loggedInUser = LoggedInUserInfo();
+        User loggedInUser = userService.loggedInUserInfo();
 
         // 로그인된 사용자가 있으면 그 정보를 model에 추가
         if (loggedInUser != null) {
@@ -69,7 +69,7 @@ public class BoardControllerWithThymeleaf {
     public String save(@ModelAttribute Board board) {
 
         // 현재 로그인된 사용자 정보 가져오기
-        User loggedInUser = LoggedInUserInfo();
+        User loggedInUser = userService.loggedInUserInfo();
 
         if (loggedInUser != null) {
             board.setRegId(loggedInUser.getUserId());
@@ -85,7 +85,7 @@ public class BoardControllerWithThymeleaf {
     public String detail(@PathVariable int id, Model model, HttpServletRequest request) {
 
         // 현재 로그인된 사용자 정보 가져오기
-        User loggedInUser = LoggedInUserInfo();
+        User loggedInUser = userService.loggedInUserInfo();
 
         // 로그인된 사용자가 있으면 그 정보를 model에 추가
         if (loggedInUser != null) {
@@ -103,7 +103,7 @@ public class BoardControllerWithThymeleaf {
     public String updateForm(@PathVariable int id, Model model) {
 
         // 현재 로그인된 사용자 정보 가져오기
-        User loggedInUser = LoggedInUserInfo();
+        User loggedInUser = userService.loggedInUserInfo();
 
         // 로그인된 사용자가 있으면 그 정보를 model에 추가
         if (loggedInUser != null) {
@@ -123,7 +123,7 @@ public class BoardControllerWithThymeleaf {
         findBoard.setTitle(board.getTitle());
         findBoard.setContent(board.getContent());
 
-        User loggedInUser = LoggedInUserInfo();
+        User loggedInUser = userService.loggedInUserInfo();
 
         if (loggedInUser != null) {
             findBoard.setRegId(loggedInUser.getUserId());
@@ -143,12 +143,5 @@ public class BoardControllerWithThymeleaf {
 
         boardService.deleteBoard(id);
         return ResponseEntity.noContent().build();
-    }
-
-    private User LoggedInUserInfo() {
-        // 현재 로그인된 사용자 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userId = authentication.getName();
-        return userService.findByUserId(userId);
     }
 }

@@ -9,4 +9,6 @@ public interface UserService {
     public boolean existsByUserId(String userId);
 
     public User findByUserId(String userId);
+
+    public User loggedInUserInfo();
 }

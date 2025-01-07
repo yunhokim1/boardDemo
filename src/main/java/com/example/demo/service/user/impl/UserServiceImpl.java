@@ -4,6 +4,8 @@ import com.example.demo.dao.user.UserRepository;
 import com.example.demo.domain.user.User;
 import com.example.demo.service.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findByUserId(String userId) {
         return userRepository.findByUserId(userId).orElse(null);
+    }
+
+    // 현재 로그인된 사용자 정보 가져오기
+    @Override
+    public User loggedInUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        return findByUserId(userId);
     }
 
 
