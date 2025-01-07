@@ -24,10 +24,6 @@
             <label for="content" class="form-label">내용</label>
             <textarea class="form-control" id="content" name="content" rows="10" th:text="${board.content}" required></textarea>
         </div>
-        <div class="col-md-12">
-            <label for="writer" class="form-label">작성자</label>
-            <input type="text" class="form-control" id="writer" name="writer" th:value="${board.writer}" readonly>
-        </div>
         <div class="col-12 text-end">
             <button type="button" class="btn btn-light btn-sm custom-btn" onclick="submitForm()"><i class="bi bi-pencil"></i> 수정</button>
             <a href="#" th:href="@{/boards/{id}(id=${board.id})}" class="btn btn-light btn-sm custom-btn"><i  class="bi bi-x"></i> 취소</a>

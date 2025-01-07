@@ -50,7 +50,7 @@ public class BoardController {
 
         board.setTitle(updateBoard.getTitle());
         board.setContent(updateBoard.getContent());
-        board.setWriter(updateBoard.getWriter());
+        board.setRegId(updateBoard.getRegId());
         boardService.saveBoard(board);
         return ResponseEntity.ok(board);
     }

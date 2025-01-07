@@ -29,24 +29,24 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="board : ${boards}">
+        <tr th:each="board : ${boards}" th:if="${#lists.size(boards) > 0}">
             <td th:text="${board.id}" style="text-align: center;"></td>
             <td>
                 <a th:href="@{/boards/{id}(id=${board.id})}" class="fw-bold custom-link" th:text="${board.title}"></a>
             </td>
-            <td th:text="${board.writer}" style="text-align: center;"></td>
+            <td th:text="${board.nickname}" style="text-align: center;"></td>
             <td th:text="${board.regDate}" style="text-align: center;"></td>
             <td th:text="${board.viewCount}" style="text-align: center;"></td>
-            <!--<td>
-                <a th:href="@{/boards/{id}(id=${board.id})}" class="btn btn-info btn-sm text-white">상세보기</a>
-            </td>-->
+        </tr>
+        <tr th:if="${#lists.size(boards) == 0}">
+            <td colspan="5" class="text-center">게시글이 없습니다.</td>
         </tr>
         </tbody>
     </table>
 </div>
 
 <!-- Pagination -->
-<nav aria-label="Page navigation example">
+<nav aria-label="Page navigation example" th:if="${totalPages > 0}">
     <ul class="pagination justify-content-center">
         <!-- 이전 버튼 -->
         <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">

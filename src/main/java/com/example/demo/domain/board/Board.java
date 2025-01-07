@@ -25,7 +25,10 @@ public class Board {
     private String content;
 
     @Column(nullable = false, length = 10)
-    private String writer;
+    private String regId;
+
+    @Column(nullable = false, length = 10)
+    private String nickname;
 
     @Column(columnDefinition = "integer default 0")
     private int viewCount;

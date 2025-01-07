@@ -57,7 +57,8 @@ public class BoardControllerWithThymeleaf {
         User loggedInUser = userService.findByUserId(userId);
 
         if (loggedInUser != null) {
-            board.setWriter(loggedInUser.getNickname());
+            board.setRegId(userId);
+            board.setNickname(loggedInUser.getNickname());
         }
 
         boardService.saveBoard(board);
@@ -90,7 +91,15 @@ public class BoardControllerWithThymeleaf {
 
         findBoard.setTitle(board.getTitle());
         findBoard.setContent(board.getContent());
-        findBoard.setWriter(board.getWriter());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String userId = authentication.getName();
+        User loggedInUser = userService.findByUserId(userId);
+
+        if (loggedInUser != null) {
+            findBoard.setRegId(userId);
+            findBoard.setNickname(loggedInUser.getNickname());
+        }
         boardService.saveBoard(findBoard);
 
         return ResponseEntity.ok(findBoard);
