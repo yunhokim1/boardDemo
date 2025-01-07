@@ -40,10 +40,16 @@ public class BoardControllerWithThymeleaf {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "id"));
         Page<Board> boardsPage = boardService.findAllBoards(pageable);
 
+        // 페이지 그룹 범위 계산
+        int startPage = (page / 10) * 10;  // 10페이지마다 끊어서 보여줌
+        int endPage = Math.min(startPage + 9, boardsPage.getTotalPages() - 1); // 총 페이지 수를 넘지 않도록 설정
+
         model.addAttribute("boards", boardsPage.getContent());
         model.addAttribute("currentPage", boardsPage.getNumber());
         model.addAttribute("totalPages", boardsPage.getTotalPages());
         model.addAttribute("totalItems", boardsPage.getTotalElements());
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
         return "board/list";
     }
 

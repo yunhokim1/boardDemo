@@ -50,19 +50,33 @@
     <ul class="pagination justify-content-center">
         <!-- 이전 버튼 -->
         <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-            <a class="page-link" th:href="@{|/boards?page=${currentPage - 1}&size=10|}" aria-label="Previous">
+            <a class="page-link" th:href="@{|/boards?page=${currentPage - 10 >= 0 ? currentPage - 10 : 0}&size=10|}" aria-label="Previous">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
 
+        <!-- 이전 버튼 -->
+        <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+            <a class="page-link" th:href="@{|/boards?page=${currentPage - 1 >= 0 ? currentPage - 1 : 0}&size=10|}" aria-label="Previous">
+                <span aria-hidden="true">&lt;</span>
+            </a>
+        </li>
+
         <!-- 페이지 번호 -->
-        <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${pageNum == currentPage} ? 'active'">
+        <li class="page-item" th:each="pageNum : ${#numbers.sequence(startPage, endPage)}" th:classappend="${pageNum == currentPage} ? 'active'">
             <a class="page-link" th:href="@{|/boards?page=${pageNum}&size=10|}" th:text="${pageNum + 1}"></a>
         </li>
 
         <!-- 다음 버튼 -->
         <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-            <a class="page-link" th:href="@{|/boards?page=${currentPage + 1}&size=10|}" aria-label="Next">
+            <a class="page-link" th:href="@{|/boards?page=${currentPage + 1 < totalPages ? currentPage + 1 : totalPages - 1}&size=10|}" aria-label="Next">
+                <span aria-hidden="true">&gt;</span>
+            </a>
+        </li>
+
+        <!-- 다음 버튼 -->
+        <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
+            <a class="page-link" th:href="@{|/boards?page=${currentPage + 10 < totalPages ? currentPage + 10 : totalPages - 1}&size=10|}" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>
